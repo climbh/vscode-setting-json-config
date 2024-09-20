@@ -1,0 +1,61 @@
+{
+  "name": "vscode-setting-json-config",
+  "displayName": "vscode-setting-json-config",
+  "version": "0.0.1",
+  "description": "The project initializes the.vscode/settings.json file and enters some default contents",
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "climbh.file-nesting",
+        "title": "文件嵌套配置",
+        "category": "climbh-file-nesting"
+      },
+      {
+        "command": "climbh.custom-config",
+        "title": "settings.json配置自定义",
+        "category": "climbh-custom-config"
+      },
+      {
+        "command": "climbh.remove-config",
+        "title": "settings.json自定义配置删除",
+        "category": "climbh-remove-config"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.6.2",
+    "@types/eslint": "^9.6.1",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.93.0",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.9.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.5.4",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
