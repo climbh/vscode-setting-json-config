@@ -36,6 +36,8 @@ export function fileNestingConfig(ctx: ExtensionContext) {
 
     if (selectConfigString?.label === '文件嵌套') {
       config.update('explorer.fileNesting.patterns', defaultConfig['explorer.fileNesting.patterns'])
+      config.update('explorer.fileNesting.enabled', true)
+      config.update('explorer.fileNesting.expand', false)
     }
     else {
       const useConfig = await getStore(prefix + selectConfigString.label) as string
