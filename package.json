@@ -1,8 +1,11 @@
 {
   "publisher": "climbh",
+  "publishConfig": {
+    "git-checks": false
+  },
   "name": "vscode-setting-json-config",
   "displayName": "vscode-setting-json-config",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The project initializes the.vscode/settings.json file and enters some default contents",
   "author": "climbh",
   "license": "MIT",
@@ -14,7 +17,7 @@
     "Other"
   ],
   "main": "./dist/extension.js",
-  "icon": "/src/logo/icon.png",
+  "icon": "logo/icon.png",
   "engines": {
     "vscode": "^1.93.0"
   },
@@ -40,9 +43,9 @@
   },
   "scripts": {
     "build": "tsup src/extension.ts --external vscode",
-    "dev": "pnpm build --watch src",
-    "publish": "pnpm build && vsce publish --no-dependencies",
-    "pack": "pnpm build && vsce package --no-dependencies",
+    "dev": "pnpm run build --watch src",
+    "publish": "pnpm run build && vsce publish --no-dependencies",
+    "pack": "pnpm run build && vsce package --no-dependencies",
     "lint": "eslint --fix"
   },
   "devDependencies": {
