@@ -3,7 +3,7 @@ import { commands, window, workspace } from 'vscode'
 import { prefix } from '../constants'
 import defaultConfig from '../json/defaultConfig.json'
 import { useStore } from '../store'
-import { createSettingFileAuto, deepMerge } from '../utils/util'
+import { createSettingFileAuto } from '../utils/util'
 
 export function fileNestingConfig(ctx: ExtensionContext) {
   return commands.registerCommand('climbh.file-nesting', async () => {
@@ -34,11 +34,14 @@ export function fileNestingConfig(ctx: ExtensionContext) {
 
     createSettingFileAuto('.vscode/settings.json')
 
-    if (selectConfigString?.label === '默认') {
+    if (selectConfigString?.label === '文件嵌套') {
       config.update('explorer.fileNesting.patterns', defaultConfig['explorer.fileNesting.patterns'])
     }
     else {
       const useConfig = await getStore(prefix + selectConfigString.label) as string
+      if (!useConfig) {
+        return window.showErrorMessage('改配置没有找到')
+      }
       const code = JSON.parse(useConfig)?.code
       for (const key in code) {
         console.log('这是key:', key, code[key])

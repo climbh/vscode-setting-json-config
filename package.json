@@ -1,7 +1,8 @@
 {
+  "publisher": "climbh",
   "name": "vscode-setting-json-config",
   "displayName": "vscode-setting-json-config",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The project initializes the.vscode/settings.json file and enters some default contents",
   "categories": [
     "Other"
@@ -15,35 +16,30 @@
     "commands": [
       {
         "command": "climbh.file-nesting",
-        "title": "文件嵌套配置",
+        "title": "配置写入",
         "category": "climbh-file-nesting"
       },
       {
         "command": "climbh.custom-config",
-        "title": "settings.json配置自定义",
+        "title": "配置自定义",
         "category": "climbh-custom-config"
       },
       {
         "command": "climbh.remove-config",
-        "title": "settings.json自定义配置删除",
+        "title": "自定义配置删除",
         "category": "climbh-remove-config"
       }
     ]
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "test": "vscode-test"
+    "build": "tsup src/extension.ts --external vscode",
+    "dev": "pnpm build --watch src",
+    "publish": "pnpm build && vsce publish --no-dependencies",
+    "pack": "pnpm build && vsce package --no-dependencies",
+    "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.6.2",
+    "@antfu/eslint-config": "^3.7.1",
     "@types/eslint": "^9.6.1",
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
@@ -52,8 +48,10 @@
     "@typescript-eslint/parser": "^8.3.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
-    "eslint": "^9.9.1",
+    "@vscode/vsce": "^3.1.0",
+    "eslint": "^9.11.0",
     "ts-loader": "^9.5.1",
+    "tsup": "^8.3.0",
     "typescript": "^5.5.4",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4"

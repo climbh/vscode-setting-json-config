@@ -1,7 +1,7 @@
 import type { ExtensionContext } from 'vscode'
 import fs from 'node:fs'
 import path from 'node:path'
-import { commands, env, extensions, Uri, ViewColumn, window, workspace } from 'vscode'
+import { commands, ViewColumn, window, workspace } from 'vscode'
 import { prefix } from '../constants'
 import { useStore } from '../store'
 

@@ -68,21 +68,6 @@ export function readDirFiles(dir: string, filter?: (file: fs.Dirent) => boolean)
 }
 
 /**
- * eslint格式化
- * @param filePaths 文件路径
- * @returns eslint结果
- */
-export async function formatter(filePaths: string[]) {
-  const eslint = new ESLint({
-    fix: true,
-  })
-  const results = await eslint.lintFiles(filePaths)
-  await ESLint.outputFixes(results)
-
-  return results
-}
-
-/**
  * 创建配置文件
  */
 export function createSettingFileAuto(filePath: string) {
