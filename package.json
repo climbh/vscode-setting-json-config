@@ -2,7 +2,7 @@
   "publisher": "climbh",
   "name": "vscode-setting-json-config",
   "displayName": "vscode-setting-json-config",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "The project initializes the.vscode/settings.json file and enters some default contents",
   "author": "climbh",
   "license": "MIT",

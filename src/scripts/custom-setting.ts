@@ -1,6 +1,4 @@
 import type { ExtensionContext } from 'vscode'
-import fs from 'node:fs'
-import path from 'node:path'
 import { commands, ViewColumn, window, workspace } from 'vscode'
 import { prefix } from '../constants'
 import { useStore } from '../store'
@@ -24,7 +22,6 @@ export function customSetting(ctx: ExtensionContext) {
         retainContextWhenHidden: false, // 即使面板隐藏也保留状态
       },
     )
-    // 设置Webview的内容
     panel.webview.html = getWebviewContent()
 
     // 处理Webview面板发送的消息
@@ -77,9 +74,113 @@ export function customSetting(ctx: ExtensionContext) {
       }
     })
     function getWebviewContent() {
-      const indexPath = path.join(ctx.extensionPath, 'src/web/cutomSetting.html')
-      const content = fs.readFileSync(indexPath, 'utf-8')
-      return content
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义个人设置</title>
+    <style>
+        .wrap {
+            padding: 20px;
+        }
+        .name-input,
+        .desc-input {
+            margin-bottom: 14px;
+        }
+        .name-input input,
+        .desc-input input {
+            width: 100%;
+            height: 24px;
+            padding: 5px;
+            background-color: #fafafa;
+            border: 1px solid #999;
+            color: #000;
+            outline: none;
+        }
+
+        .code-input textarea {
+            width: 100%;
+            padding: 5px;
+            background-color: #fafafa;
+            border: 1px solid #999;
+            color: #000;
+            outline: none;
+        }
+        button {
+            padding: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <p style="color: red;">配置内容如果settings.json不支持改字段,那么在使用合并时则不会写入到settting.json文件中</p>
+        <div class="name-input">
+            <input id="configName" type="text" placeholder="请输入配置名">
+        </div>
+        <div class="desc-input">
+            <input id="configDesc" type="text" placeholder="请输入配置描述">
+        </div>
+        <div class="code-input">
+            <textarea id="configCode" rows="10" placeholder="请输入自定义配置(json格式)"></textarea>
+        </div>
+        <div>
+            <button id="submit">保存设置</button>
+        </div>
+    </div>
+
+
+    <script>
+        const vscode = acquireVsCodeApi();
+        document.querySelector('#submit').addEventListener('click', () => {
+            const code = document.querySelector('#configCode').value
+            const desc = document.querySelector('#configDesc').value
+            const name = document.querySelector('#configName').value
+            vscode.postMessage({
+                command: 'customSetting',
+                data: {
+                    code,
+                    name,
+                    desc
+                }
+            })
+        }) 
+
+        toggleSubmitBtnText()
+
+        window.addEventListener('message', (event) => {
+            const message = event.data;
+            if(message.command === 'clearInput') {
+                document.querySelector('#configCode').value = ''
+                document.querySelector('#configName').value = ''
+                document.querySelector('#configDesc').value = ''
+                toggleSubmitBtnText()
+            } else if(message.command === 'editConfig') {
+                toggleSubmitBtnText('edit')
+                const { name, desc, code } = message.data
+                document.querySelector('#configCode').value = JSON.stringify(code)
+                document.querySelector('#configName').value = name
+                document.querySelector('#configDesc').value = desc
+            }
+        })
+
+        function toggleSubmitBtnText(state) {
+            let text = '新增配置'
+            switch (state) {
+                case 'edit':
+                    text = '编辑配置'
+                    break;
+            
+                default:
+                    break;
+            }
+
+            document.querySelector('#submit').innerText = '确认' + text
+
+        }
+    </script>
+</body>
+</html>`
     }
 
     function clearInput() {
